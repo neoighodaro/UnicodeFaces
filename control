@@ -1,0 +1,11 @@
+Package: com.tapsharp.unicodefaces
+Name: Unicode Faces
+Depends: firmware(>=8.0), mobilesubstrate
+Conflicts:org.seatanners.unifaces
+Version: 1.0.0
+Architecture: iphoneos-arm
+Description: Add Unicode faces to your Keyboard. Based loosely on @seatanners UniFaces.
+Maintainer: TapSharp <tweaks@tapsharp.com>
+Author: TapSharp <tweaks@tapsharp.com>
+Section: Tweaks
+Tags:unifaces,unicode,smileys
