@@ -47,8 +47,7 @@ NSString* activatorKey;
 
 %new
 - (void)unifacesKeyboard:(NSArray *)subviews withIntent:(NSString *)intent {
-    NSString *logMsg = [NSString stringWithFormat:@"Attempting to %@ Unicodefaces Keyboard.", intent];
-    consoleLog(logMsg, nil);
+    consoleLog(@"Attempting to %@ Unicodefaces Keyboard.", intent);
 
     for (UIView *view in subviews) {
         if ([view isKindOfClass:[UnicodeFacesKeyboard class]]) {
