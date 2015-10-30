@@ -1,7 +1,7 @@
 TWEAK_NAME = UnicodeFaces
 
 UnicodeFaces_FILES  = UnicodeFacesKeyboard.m
-UnicodeFaces_FILES += Keyboard.xm FollowPlea/FollowPlea.xm
+UnicodeFaces_FILES += Keyboard.xm
 UnicodeFaces_FRAMEWORKS = UIKit CoreGraphics QuartzCore Social Accounts
 UnicodeFaces_LIBRARIES = cephei
 UnicodeFaces_LDFLAGS += -Wl,-segalign,4000
