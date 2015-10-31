@@ -17,7 +17,7 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>footerText</key>
-			<string>You have to long press this key to activate Unicode Faces selector.</string>
+			<string>You have to long press this key to activate Unicode Faces selector. You may need to respring to see changes.</string>
 		</dict>
         <dict>
             <key>cell</key>
