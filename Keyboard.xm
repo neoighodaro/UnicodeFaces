@@ -1,6 +1,8 @@
 #import "UnicodeFacesKeyboard.h"
+#import <Cephei/HBPreferences.h>
 
 NSString* activatorKey;
+HBPreferences *preferences;
 
 %hook UIKeyboardImpl
 
@@ -72,8 +74,32 @@ NSString* activatorKey;
 %end
 
 
+void UFPreferencesChanged() {
+    consoleLog(@"UFPreferencesChanged", nil);
+    NSDictionary *plist = [NSDictionary dictionaryWithContentsOfFile:[[[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"Preferences"] stringByAppendingPathComponent:@"com.tapsharp.unicodefaces"] stringByAppendingPathExtension:@"plist"]];
+
+    if (plist[@"activator"]) {
+        [preferences setObject:plist[@"activator"] forKey:@"activator"];
+        consoleLog(@"UFPreferencesChanged updated", nil);
+    }
+}
+
+
 %ctor {
-    activatorKey = @"Space-Key"; // @"International-Key"
+    HBPreferences *preferences = [HBPreferences preferencesForIdentifier:@"com.tapsharp.unicodefaces"];
+
+    [preferences registerObject:&activatorKey default:@"Space-Key" forKey:@"activator"];
+
+    UFPreferencesChanged();
+    CFNotificationCenterAddObserver(
+        CFNotificationCenterGetDarwinNotifyCenter(),
+        NULL,
+        (CFNotificationCallback)UFPreferencesChanged,
+        CFSTR("com.tapsharp.unicodefaces/ReloadPrefs"),
+        NULL,
+        kNilOptions
+    );
+
     %init;
-    consoleLog(@"Initialized!", nil);
+    consoleLog(@"Initialized! %@", activatorKey);
 }
