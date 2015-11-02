@@ -4,7 +4,7 @@ UnicodeFaces_FILES = $(wildcard *.m)
 UnicodeFaces_INSTALL_PATH = /Library/PreferenceBundles
 UnicodeFaces_FRAMEWORKS = UIKit
 UnicodeFaces_PRIVATE_FRAMEWORKS = Preferences
-UnicodeFaces_LIBRARIES = cepheiprefs
+UnicodeFaces_LIBRARIES = cephei cepheiprefs
 
 include $(THEOS)/makefiles/common.mk
 include $(THEOS_MAKE_PATH)/bundle.mk

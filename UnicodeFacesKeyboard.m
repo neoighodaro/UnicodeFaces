@@ -1,5 +1,12 @@
 #import "UnicodeFacesKeyboard.h"
 
+HBPreferences* preferences;
+
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#pragma mark - ButtonPressHandler
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 @implementation ButtonPressHandler
 - (id)initWithKeyboard:(UIKeyboardImpl*)keyboard {
 	self = [super init];
@@ -15,27 +22,33 @@
 @end
 
 
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#pragma mark - UnicodeFacesKeyboard
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 @implementation UnicodeFacesKeyboard : UIView
 
 - (id)initWithFrame:(CGRect)frame withButtonPressListener:(id<ButtonPressListener>)receiver {
-
 	CGFloat oldYCord = frame.origin.y;
 
 	CGRect frameRect = frame;
 	frameRect.origin.y = CGRectGetHeight(frame);
 
-	consoleLog(@"initWithFrame:withButtonPressListener:%@", self);
     UnicodeFacesKeyboard* superView = [super initWithFrame:frameRect];
     self = [self applyBlurToView:superView withEffectStyle:UIBlurEffectStyleDark andConstraints:YES];
 
 	if (self) {
-		self.prefs = defaultUnifaces;
+		self.prefs = [preferences objectForKey:@"unifaces"];
 
 		self.receiver = receiver;
 
 		[self addSubview:[self buildTopLabel]];
 		[self addSubview:[self buildCloseButton]];
-		//[self addSubview:[self buildSettingsButton]];
+
+		if ( ! IN_SPRINGBOARD) {
+			[self addSubview:[self buildSettingsButton]];
+		}
 
 		UIScrollView *scrollView = [self buildScrollView];
 
@@ -50,23 +63,22 @@
 				CGRect newRect = frame;
 				newRect.origin.y = oldYCord;
         		self.frame = newRect;
-			} completion:^(BOOL finished) {
-				//
-			}
+			} completion:nil
 		];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
-                                        		selector:@selector(orientationChanged:)
-                                             		name:@"UIDeviceOrientationDidChangeNotification"
-                                           		  object:nil];
+                                        		 selector:@selector(orientationChanged:)
+                                             		 name:@"UIDeviceOrientationDidChangeNotification"
+                                           		   object:nil];
 	}
 
 	return self;
 }
 
 
+#pragma mark - Build Views
+
 - (void)orientationChanged:(NSNotification *)notification {
-	// When orientation changes hide the keyboard
     [self buttonPressReceived:nil];
 }
 
@@ -75,7 +87,7 @@
 	label.text = [@"Unicode Faces" uppercaseString];
 	label.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:20];
 	label.textAlignment = NSTextAlignmentCenter;
-	label.textColor = [UIColor colorWithWhite:1 alpha:0.8];
+	label.textColor = [UIColor colorWithWhite:1 alpha:0.2];
 	label.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.2];
 
 	return label;
@@ -92,7 +104,6 @@
 
 	return btn;
 }
-
 
 - (UIButton *)buildCloseButton {
 	UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -120,15 +131,14 @@
 
 	btn.frame = CGRectMake(0, index * 40, CGRectGetWidth(self.frame), 40);
 	[btn setTitle:self.prefs[index] forState:UIControlStateNormal];
-
-	[btn addTarget:self.receiver action:@selector(buttonPressReceived:)
-					   forControlEvents:UIControlEventTouchUpInside];
-
-	[btn addTarget:self action:@selector(buttonPressReceived:)
-			  forControlEvents:UIControlEventTouchUpInside];
+	[btn addTarget:self.receiver action:@selector(buttonPressReceived:) forControlEvents:UIControlEventTouchUpInside];
+	[btn addTarget:self action:@selector(buttonPressReceived:) forControlEvents:UIControlEventTouchUpInside];
 
 	return btn;
 }
+
+
+#pragma mark - Button Press Events
 
 - (void)buttonPressReceivedForSettings:(UIButton *)src {
 	[UnicodeFacesKeyboard animateWithDuration:.1 delay:0.0 options:UIViewAnimationOptionCurveEaseIn
@@ -138,8 +148,10 @@
     		self.frame = newRect;
 		}
 		completion:^(BOOL finished) {
-			NSString *url = [NSString stringWithFormat:@"%@com.tapsharp.unicodefaces", UIApplicationOpenSettingsURLString];
-			if (finished) [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+			if (finished) {
+				NSString *url = [NSString stringWithFormat:@"%@%@", UIApplicationOpenSettingsURLString, UFBundleID];
+				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+			}
 		}
 	];
 }
@@ -154,6 +166,9 @@
 		completion:nil
 	];
 }
+
+
+#pragma mark - Blur
 
 - (UnicodeFacesKeyboard *)applyBlurToView:(UnicodeFacesKeyboard *)view withEffectStyle:(UIBlurEffectStyle)style andConstraints:(BOOL)addConstraints {
 	UIBlurEffect *blurEffect = [NSClassFromString(@"UIBlurEffect") effectWithStyle:style];

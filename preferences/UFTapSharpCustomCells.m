@@ -1,8 +1,8 @@
-#import "TapSharpCustomCells.h"
+#import "UFTapSharpCustomCells.h"
 
 #pragma mark Header Cell
 
-@implementation TapSharpHeaderCell
+@implementation UFTapSharpHeaderCell
 
 - (NSString *) tweakName {
 	return @"Unicode Faces";
@@ -63,7 +63,7 @@
 
 #pragma mark - Footer Cell
 
-@implementation TapSharpFooterCell
+@implementation UFTapSharpFooterCell
 
 - (NSString *) copyrightText {
 	return @"ALL RIGHTS RESERVED © %@";

@@ -17,7 +17,6 @@
 @interface UnicodeFacesKeyboard()
 @property (strong, nonatomic) id<ButtonPressListener> receiver;
 @property (strong, nonatomic) NSArray* prefs;
-
 - (UIScrollView *)buildScrollView;
 - (UIButton *)buildButtonAtIndex:(int)index;
 - (UILabel *)buildTopLabel;

@@ -1,59 +1,47 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>items</key>
-	<array>
+{
+    title = "Unicode Faces";
+    items = (
+        {
+            cell = PSGroupCell;
+            footerCellClass = UFTapSharpHeaderCell;
+        },
 
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>footerCellClass</key>
-			<string>TapSharpHeaderCell</string>
-		</dict>
+        {
+            cell = PSGroupCell;
+            footerText = "You have to long press this key to activate Unicode Faces selector. You may need to respring to see changes.";
+        },
+        {
+            id = "activator";
+            cell = PSLinkListCell;
+            defaults = "com.tapsharp.unicodefaces";
+            detail = PSListItemsController;
+            key = "activator";
+            label = "Activator";
+            validTitles = (
+                "Space Key",
+                "International/Emoji Key"
+            );
+            validValues = (
+                "Space-Key",
+                "International-Key"
+            );
+            PostNotification = "com.tapsharp.unicodefaces/ReloadPrefs";
+        },
 
+        {
+            cell = PSGroupCell;
+            footerText = "From this option you can reorder, delete or add new Unicode faces.";
+        },
+        {
+            cell = PSLinkCell;
+            detail = UFReorderListController;
+            label = "Manage Unifaces";
+            enabled = 1;
+        },
 
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>footerText</key>
-			<string>You have to long press this key to activate Unicode Faces selector. You may need to respring to see changes.</string>
-		</dict>
-        <dict>
-            <key>cell</key>
-            <string>PSLinkListCell</string>
-            <key>defaults</key>
-            <string>com.tapsharp.unicodefaces</string>
-            <key>detail</key>
-            <string>PSListItemsController</string>
-            <key>key</key>
-            <string>activator</string>
-            <key>label</key>
-            <string>Activator</string>
-            <key>validTitles</key>
-            <array>
-                <string>Hold Space Key</string>
-                <string>Hold Emoji Key</string>
-            </array>
-            <key>validValues</key>
-            <array>
-                <string>Space-Key</string>
-                <string>International-Key</string>
-            </array>
-            <key>PostNotification</key>
-            <string>com.tapsharp.unicodefaces/ReloadPrefs</string>
-        </dict>
-
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>footerCellClass</key>
-			<string>TapSharpFooterCell</string>
-		</dict>
-
-
-	</array>
-	<key>title</key>
-	<string>Unicode Faces</string>
-</dict>
-</plist>
+        {
+            cell = PSGroupCell;
+            footerCellClass = UFTapSharpFooterCell;
+        }
+    );
+}

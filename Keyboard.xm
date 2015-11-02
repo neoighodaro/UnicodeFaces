@@ -1,8 +1,12 @@
 #import "UnicodeFacesKeyboard.h"
-#import <Cephei/HBPreferences.h>
 
-NSString* activatorKey;
-HBPreferences *preferences;
+HBPreferences* preferences;
+
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#pragma mark - UIKeyboardImpl
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 %hook UIKeyboardImpl
 
@@ -12,20 +16,10 @@ HBPreferences *preferences;
     UIKeyboardLayoutStar* keyboard = (UIKeyboardLayoutStar *) [self _layout];
     NSString* longPressedKey = [keyboard.activeKey name];
 
-    consoleLog([@"Long Pressed: " stringByAppendingString:longPressedKey], nil);
-
-    if ([longPressedKey isEqualToString:activatorKey]) {
+    if ([longPressedKey isEqualToString:[preferences objectForKey:@"activator"]]) {
         [self buildUnicodeKeyboard:keyboard];
-        consoleLog(@"Completed longPressedAction.", nil);
     }
 
-	return %orig;
-}
-
-- (NSArray *)subviews {
-	%log;
-
-	[self unifacesKeyboard:%orig withIntent:@"show"];
 	return %orig;
 }
 
@@ -34,11 +28,9 @@ HBPreferences *preferences;
 -(void) buildUnicodeKeyboard:(UIKeyboardLayoutStar *)keyboard {
     [self unifacesKeyboard:self.subviews withIntent:@"hide"];
 
-    consoleLog(@"Create and register keyboard button press handler", nil);
     ButtonPressHandler* buttonPressHandler = [[ButtonPressHandler alloc] initWithKeyboard:self];
     UnicodeFacesKeyboard* view = [[UnicodeFacesKeyboard alloc] initWithFrame:self.frame
                                                      withButtonPressListener:buttonPressHandler];
-
 
     [[self superview] addSubview:view];
     [keyboard deactivateActiveKeys];
@@ -49,22 +41,14 @@ HBPreferences *preferences;
 
 %new
 - (void)unifacesKeyboard:(NSArray *)subviews withIntent:(NSString *)intent {
-    consoleLog(@"Attempting to %@ Unicodefaces Keyboard.", intent);
-
     for (UIView *view in subviews) {
         if ([view isKindOfClass:[UnicodeFacesKeyboard class]]) {
             if ([intent isEqual:@"show"]) {
                 [self bringSubviewToFront:view];
-                consoleLog(@"Pushed UnicodeFacesKeyboard subview to front.", nil);
             }
 
             else if ([intent isEqual:@"hide"]) {
                 [view removeFromSuperview];
-                consoleLog(@"Removed UnicodeFacesKeyboard view from subviews.", nil);
-            }
-
-            else {
-                consoleLog(@"No intent match for unifacesKeyboard.", nil);
             }
 
             break;
@@ -74,32 +58,19 @@ HBPreferences *preferences;
 %end
 
 
-void UFPreferencesChanged() {
-    consoleLog(@"UFPreferencesChanged", nil);
-    NSDictionary *plist = [NSDictionary dictionaryWithContentsOfFile:[[[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"Preferences"] stringByAppendingPathComponent:@"com.tapsharp.unicodefaces"] stringByAppendingPathExtension:@"plist"]];
 
-    if (plist[@"activator"]) {
-        [preferences setObject:plist[@"activator"] forKey:@"activator"];
-        consoleLog(@"UFPreferencesChanged updated", nil);
-    }
-}
-
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#pragma mark - Constructor
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %ctor {
-    HBPreferences *preferences = [HBPreferences preferencesForIdentifier:@"com.tapsharp.unicodefaces"];
+    HBLogDebug(@"Initializing Bundle: %@", UFBundleID);
 
-    [preferences registerObject:&activatorKey default:@"Space-Key" forKey:@"activator"];
-
-    UFPreferencesChanged();
-    CFNotificationCenterAddObserver(
-        CFNotificationCenterGetDarwinNotifyCenter(),
-        NULL,
-        (CFNotificationCallback)UFPreferencesChanged,
-        CFSTR("com.tapsharp.unicodefaces/ReloadPrefs"),
-        NULL,
-        kNilOptions
-    );
+    preferences = [[HBPreferences alloc] initWithIdentifier:UFBundleID];
+    [preferences registerDefaults:@{ @"activator": @"Space-Key", @"unifaces": defaultUnifaces }];
 
     %init;
-    consoleLog(@"Initialized! %@", activatorKey);
+
+    HBLogDebug(@"Initialized Bundle: %@", UFBundleID);
+    HBLogDebug(@"Preferences: Activator: %@ Unifaces: %@", [preferences objectForKey:@"activator"], [preferences objectForKey:@"unifaces"]);
 }
