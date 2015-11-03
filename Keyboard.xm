@@ -64,13 +64,7 @@ HBPreferences* preferences;
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %ctor {
-    HBLogDebug(@"Initializing Bundle: %@", UFBundleID);
-
     preferences = [[HBPreferences alloc] initWithIdentifier:UFBundleID];
     [preferences registerDefaults:@{ @"activator": @"Space-Key", @"unifaces": defaultUnifaces }];
-
     %init;
-
-    HBLogDebug(@"Initialized Bundle: %@", UFBundleID);
-    HBLogDebug(@"Preferences: Activator: %@ Unifaces: %@", [preferences objectForKey:@"activator"], [preferences objectForKey:@"unifaces"]);
 }

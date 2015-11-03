@@ -15,6 +15,10 @@ HBPreferences* preferences;
     return self;
 }
 
++ (UIColor *)hb_tintColor {
+	return [UIColor colorWithWhite:74.f/255.f alpha:1];
+}
+
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #pragma mark - Specifiers
@@ -59,7 +63,7 @@ HBPreferences* preferences;
     														  edit:nil];
 
     [specifier setProperty:uniface forKey:@"id"];
-    [specifier setProperty:NSStringFromSelector(@selector(removedSpecifier:)) forKey:PSDeletionActionKey];
+    [specifier setProperty:NSStringFromSelector(@selector(removeUnicodeFace:)) forKey:PSDeletionActionKey];
 
     return specifier;
 }
@@ -70,49 +74,64 @@ HBPreferences* preferences;
 #pragma mark - Delete and Add
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
--(void)removedSpecifier:(PSSpecifier*)specifier{
+-(void)removeUnicodeFace:(PSSpecifier*)specifier{
 	[_unicodeFaces removeObjectAtIndex:[_unicodeFaces indexOfObject:[specifier identifier]]];
 	[preferences setObject:_unicodeFaces forKey:@"unifaces"];
 	[preferences synchronize];
 }
 
--(void) addSpecifier:(NSString*)uniface {
-	HBLogDebug(@"Old Specifiers: %@", _specifiers);
-
-	NSMutableArray* specifiers = [_specifiers mutableCopy];
-
-	[specifiers addObject:[self unifacecodeSpecifier:uniface]];
-	_specifiers = [specifiers copy];
-
-	[specifiers release];
-
-	// @TODO Reload?
-	HBLogDebug(@"New Specifiers: %@", _specifiers);
-}
-
--(void) restoreDefaultsUnicodeFaces {
-	_unicodeFaces = [defaultUnifaces mutableCopy];
+-(void) addUnicodeFace:(NSString*)unicodeFace {
+	[_unicodeFaces insertObject:unicodeFace atIndex:0];
 	[preferences setObject:_unicodeFaces forKey:@"unifaces"];
 	[preferences synchronize];
+	[self reloadSpecifiers];
 }
 
+- (IBAction) addUnicodeFaceAlert:(id)sender {
+	UIAlertController * alert=   [UIAlertController alertControllerWithTitle:TRANSLATE_TEXT(@"ADD_UNICODE")
+																	 message:nil
+															  preferredStyle:UIAlertControllerStyleAlert];
 
-// - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
-//     [super setEditing:editing animated:animated];
 
-//     HBLogDebug(@"Editing!");
+	UIAlertAction* addButton = [UIAlertAction actionWithTitle:TRANSLATE_TEXT(@"ADD")
+														style:UIAlertActionStyleDefault
+													  handler:^(UIAlertAction * action) {
+													  		NSString* newUnicodeFace = ((UITextField*)alert.textFields[0]).text;
 
-//     if (editing) {
-//         // Add the + button
-//         UIBarButtonItem *addBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-//         																		target:self
-//         																		action:@selector(addSpecifier:)];
-//         self.navigationItem.leftBarButtonItem = addBtn;
-//     } else {
-//         // remove the + button
-//         self.navigationItem.leftBarButtonItem = nil;
-//     }
-// }
+													  		[self addUnicodeFace:newUnicodeFace];
+
+															[alert dismissViewControllerAnimated:YES completion:nil];
+															[self editDoneTapped];
+													  }];
+
+	UIAlertAction* cancelButton = [UIAlertAction actionWithTitle:TRANSLATE_TEXT(@"CANCEL")
+														style:UIAlertActionStyleCancel
+													  handler:^(UIAlertAction * action) {
+															[alert dismissViewControllerAnimated:YES completion:nil];
+													  }];
+
+	[alert addAction:addButton];
+	[alert addAction:cancelButton];
+	[alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+		textField.placeholder = TRANSLATE_TEXT(@"ENTER_UNICODE");
+		textField.keyboardType = UIKeyboardTypeDefault;
+	}];
+
+	[self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    [super setEditing:editing animated:animated];
+
+    if (editing) {
+        UIBarButtonItem *addBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
+        																		target:self
+        																		action:@selector(addUnicodeFaceAlert:)];
+        self.navigationItem.leftBarButtonItem = addBtn;
+    } else {
+        self.navigationItem.leftBarButtonItem = nil;
+    }
+}
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #pragma mark - Reordering Table Rows
@@ -123,31 +142,20 @@ HBPreferences* preferences;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == [_unicodeFaces count] ) {
-        return NO;
-    }
-    return YES;
+    return ! (indexPath.row == [_unicodeFaces count]);
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == [_unicodeFaces count]) {
-        return NO;
-    }
-    return YES;
+    return ! (indexPath.row == [_unicodeFaces count]);
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-	HBLogDebug(@"Reorder Preferences");
-    HBLogDebug(@"Old Prefs: %@", _unicodeFaces);
-
     PSSpecifier *specifier = [_unicodeFaces objectAtIndex:fromIndexPath.row];
     [_unicodeFaces removeObjectAtIndex:fromIndexPath.row];
     [_unicodeFaces insertObject:specifier atIndex:toIndexPath.row];
 
 	[preferences setObject:_unicodeFaces forKey:@"unifaces"];
 	[preferences synchronize];
-
-    HBLogDebug(@"New Prefs: %@", _unicodeFaces);
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
@@ -169,4 +177,15 @@ HBPreferences* preferences;
 	[super dealloc];
 }
 
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBar.tintColor = [UFReorderListController hb_tintColor];
+}
+
+-(void)editDoneTapped {
+	[super editDoneTapped];
+	_isEditingMode = !_isEditingMode;
+	[self setEditing:_isEditingMode animated:YES];
+}
 @end

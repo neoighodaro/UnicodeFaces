@@ -1,0 +1,19 @@
+{
+	ABOUT = "About";
+	ACTIVATION_HELP = "Você tem que segurar esta tecla para ativar o selecionador de UnicodeFaces. Pode que seja preciso fazer um respring para ver as mudanças.";
+	ACTIVATOR = "Ativador";
+	ADD = "Adicionar";
+	ADD_UNICODE = "Adicionar UnicodeFace";
+	ARE_YOU_SURE = "Você tem certeza?";
+	ARE_YOU_SURE_RESET = "Esa opção irá resetar o unicodeFaces de volta aos ajustes iniciais.";
+	CANCEL = "Cancelar";
+	CLOSE = "Fechar";
+	ENTER_UNICODE = "Insira seu UnicodeFace";
+	INTL_KEY = "Internacional/Emoji Key";
+	MANAGE = "Gerir UnicodeFaces";
+	MANAGE_HELP = "Desde esta opção, você pode reorganizar, excluir ou adicionar novos UnicodeFaces";
+	RESET = "Restaurar";
+	RESET_TITLE = "Restaurar padrão";
+	SHARE_TEXT = "Ei, estou usando UnicodeFaces de %@ para usar alguns emoticonos muito legais %@ #iOS #iPhone #iPad";
+	SPACE_KEY = "Barra de espaço";
+}

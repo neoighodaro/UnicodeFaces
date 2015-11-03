@@ -17,7 +17,7 @@ HBPreferences* preferences;
 }
 
 - (void)buttonPressReceived:(UIButton *)src {
-	[self.keyboardImplRef insertText:src.currentTitle];
+	[self.keyboardImplRef insertText:[src.currentTitle stringByAppendingString:@" "]];
 }
 @end
 

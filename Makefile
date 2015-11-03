@@ -9,7 +9,7 @@ UnicodeFaces_LDFLAGS += -Wl,-segalign,4000
 export ARCHS = armv7 arm64
 export TARGET = iphone:clang
 export TARGET_IPHONEOS_DEPLOYMENT_VERSION = 8.0
-export INSTALL_TARGET_PROCESSES = SpringBoard
+#export INSTALL_TARGET_PROCESSES = SpringBoard
 
 include $(THEOS)/makefiles/common.mk
 include $(THEOS_MAKE_PATH)/tweak.mk

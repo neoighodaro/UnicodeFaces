@@ -1,0 +1,63 @@
+{
+	title = ABOUT;
+	items = (
+		{
+			cell = PSGroupCell;
+			condensed = 0;
+			headerCellClass = HBPackageNameHeaderCell;
+			icon = icon.png;
+			packageIdentifier = "com.tapsharp.unicodefaces";
+			packageNameOverride = "Unicode Faces";
+			showVersion = 1;
+		},
+
+		{
+			cell = PSGroupCell;
+		},
+
+		{
+			big = 1;
+			cellClass = HBTwitterCell;
+			height = 100;
+			label = "TapSharp Interactive";
+			user = "TapSharp";
+		},
+
+		{
+			cell = PSGroupCell;
+			label = DEVELOPER;
+		},
+		{
+			cellClass = HBTwitterCell;
+			label = "Neo Ighodaro";
+			user = "NeoIghodaro";
+		},
+
+
+		{
+			cell = PSGroupCell;
+			label = TRANSLATION;
+		},
+		{
+			cellClass = HBTwitterCell;
+			label = "Thiago S.";
+			user = "smicelato";
+		},
+		{
+			cellClass = HBTwitterCell;
+			label = "BlackR41n";
+			user = "BlackR41n";
+		},
+
+		{
+			cell = PSGroupCell;
+			footerText = EMAIL_SUPPORT_TEXT;
+		},
+		{
+			action = hb_sendSupportEmail;
+			cell = PSButtonCell;
+			cellClass = HBTintedTableCell;
+			label = EMAIL_SUPPORT;
+		}
+	);
+}

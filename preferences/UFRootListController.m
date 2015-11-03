@@ -15,7 +15,7 @@ HBPreferences* preferences;
 }
 
 + (NSString *)hb_shareText {
-	return @"Hey I'm using Unicode Faces by @TapSharp to type some really cool text smileys (⌐■_■) #iOS #iPhone #iPad";
+    return [NSString stringWithFormat:TRANSLATE_TEXT(@"SHARE_TEXT"), @"@TapSharp", @"(⌐■_■)"];
 }
 
 + (NSURL *)hb_shareURL {
@@ -23,7 +23,7 @@ HBPreferences* preferences;
 }
 
 + (UIColor *)hb_tintColor {
-	return [UIColor colorWithWhite:74.f/255.f alpha:1];
+	return UFTintColor;
 }
 
 + (NSString *)hb_specifierPlist {
@@ -37,21 +37,41 @@ HBPreferences* preferences;
 - (void)setPreferenceValue:(id)value specifier:(PSSpecifier *)specifier {
     [preferences setObject:value forKey:[specifier identifier]];
     [preferences synchronize];
+}
 
-    HBLogDebug(@"Setting Value: %@ for ID: %@", value, [specifier identifier]);
+-(void) restoreDefaultsUnicodeFaces {
+    [preferences setObject:defaultUnifaces forKey:@"unifaces"];
+    [preferences synchronize];
+}
 
-    // NSDictionary *plist = [NSDictionary dictionaryWithContentsOfFile:UFBundle_PrefsFilePath];
-    // HBLogDebug(@"Plist: %@", plist);
+- (void)resetConfirmation {
+    UIAlertController * alert=   [UIAlertController alertControllerWithTitle:TRANSLATE_TEXT(@"ARE_YOU_SURE")
+                                                                     message:TRANSLATE_TEXT(@"ARE_YOU_SURE_RESET")
+                                                              preferredStyle:UIAlertControllerStyleAlert];
 
-    // CFStringRef PostNotification = (CFStringRef) CFBridgingRetain(specifier.properties[@"PostNotification"]);
-    // if(PostNotification && ! [PostNotification isEqualTo:""]) {
-    //     CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), (CFStringRef)PostNotification, nil, nil, YES);
-    // }
+
+    UIAlertAction* addButton = [UIAlertAction actionWithTitle:TRANSLATE_TEXT(@"RESET")
+                                                        style:UIAlertActionStyleDestructive
+                                                      handler:^(UIAlertAction * action) {
+                                                            [self restoreDefaultsUnicodeFaces];
+                                                            [alert dismissViewControllerAnimated:YES completion:nil];
+                                                      }];
+
+    UIAlertAction* cancelButton = [UIAlertAction actionWithTitle:TRANSLATE_TEXT(@"CANCEL")
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:^(UIAlertAction * action) {
+                                                            [alert dismissViewControllerAnimated:YES completion:nil];
+                                                      }];
+
+    [alert addAction:addButton];
+    [alert addAction:cancelButton];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 	[self.navigationItem setTitle:@""];
+    self.view.tintColor = [UFRootListController hb_tintColor];
 }
 
 @end

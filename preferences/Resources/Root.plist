@@ -8,18 +8,18 @@
 
         {
             cell = PSGroupCell;
-            footerText = "You have to long press this key to activate Unicode Faces selector. You may need to respring to see changes.";
+            footerText = ACTIVATION_HELP;
         },
         {
             id = "activator";
             cell = PSLinkListCell;
             defaults = "com.tapsharp.unicodefaces";
-            detail = PSListItemsController;
+            detail = UFReorderListController;
             key = "activator";
-            label = "Activator";
+            label = ACTIVATOR;
             validTitles = (
-                "Space Key",
-                "International/Emoji Key"
+                "SPACE_KEY",
+                "INTL_KEY"
             );
             validValues = (
                 "Space-Key",
@@ -30,13 +30,30 @@
 
         {
             cell = PSGroupCell;
-            footerText = "From this option you can reorder, delete or add new Unicode faces.";
+            footerText = MANAGE_HELP;
         },
         {
             cell = PSLinkCell;
             detail = UFReorderListController;
-            label = "Manage Unifaces";
+            label = MANAGE;
             enabled = 1;
+        },
+        {
+            cell = PSButtonCell;
+            action = resetConfirmation;
+            label = RESET_TITLE;
+            enabled = 1;
+            cellClass = HBTintedTableCell;
+        },
+
+        {
+            cell = PSGroupCell;
+        },
+        {
+            cell = PSLinkCell;
+            detail = UFAboutListController;
+            isController = 1;
+            label = ABOUT;
         },
 
         {

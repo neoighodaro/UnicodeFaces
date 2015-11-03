@@ -20,5 +20,7 @@
 	<string>1.0</string>
 	<key>NSPrincipalClass</key>
 	<string>UFRootListController</string>
+	<key>HBPackageIdentifier</key>
+	<string>com.tapsharp.unicodefaces</string>
 </dict>
 </plist>
