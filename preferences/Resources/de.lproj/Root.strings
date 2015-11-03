@@ -1,0 +1,19 @@
+{
+	ABOUT = "Über uns";
+	ACTIVATION_HELP = "Drücke den Knopf länger um das Menü zu aktivieren. Du musst evtl respingen um Änderungen wahr zunehmen.";
+	ACTIVATOR = "Activator";
+	ADD = "Hinzufügen";
+	ADD_UNICODE = "UnicodeFace hinzufügen";
+	ARE_YOU_SURE = "Bist du dir sicher?";
+	ARE_YOU_SURE_RESET = "UnicodeFaces auf Standart zurück setzen";
+	CANCEL = "Abbrechen";
+	CLOSE = "Schließen";
+	ENTER_UNICODE = "Füge dein UnicodeFace hinzu";
+	INTL_KEY = "Internationale/Emoji Knopf";
+	MANAGE = "Konfiguriere Unicode Gesichter";
+	MANAGE_HELP = "UnicodeFaces bearbeiten";
+	RESET = "Zurücksetzten";
+	RESET_TITLE = "Auf Standardeinstellungen zurücksetzen ";
+	SHARE_TEXT = "Hallo, Ich benutze Unicode Faces von %@ um coole text Smileys zu verschicken %@ #iOS #iPhone #iPad";
+	SPACE_KEY = "Leertaste";
+}
