@@ -14,6 +14,6 @@
 	MANAGE_HELP = "هذا الخيار يتيح لك بترتيب، إلغاء، أو إضافة وجه يونيكود جديد";
 	RESET = "إعادة التعيين";
 	RESET_TITLE = "إعادة التعيين إلى الوضع الأساسي";
-	SHARE_TEXT = "من ٪@ Unicode Faces أنا أستخدم للكتابة بروعة . %@ #iOS #iPhone #iPad";
+	SHARE_TEXT = "أنا أستخدم وجوه اليونيكود Unicode Faces من #TapSharp للكتابة بروعة #iOS #iPhone #iPad";
 	SPACE_KEY = "مفتاح المساحة";
 }
