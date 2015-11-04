@@ -30,6 +30,10 @@ HBPreferences* preferences;
 	return @"Root";
 }
 
++(void) postPreferenceChangedNotification {
+	CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), (CFStringRef)UFBundleID_Notification, NULL, NULL, YES);
+}
+
 - (id)readPreferenceValue:(PSSpecifier *)specifier {
     return [preferences objectForKey:[specifier identifier]];
 }
@@ -37,11 +41,13 @@ HBPreferences* preferences;
 - (void)setPreferenceValue:(id)value specifier:(PSSpecifier *)specifier {
     [preferences setObject:value forKey:[specifier identifier]];
     [preferences synchronize];
+    [UFRootListController postPreferenceChangedNotification];
 }
 
 -(void) restoreDefaultsUnicodeFaces {
     [preferences setObject:defaultUnifaces forKey:@"unifaces"];
     [preferences synchronize];
+    [UFRootListController postPreferenceChangedNotification];
 }
 
 - (void)resetConfirmation {

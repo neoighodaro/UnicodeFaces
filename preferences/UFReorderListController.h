@@ -7,6 +7,7 @@ extern NSString* PSDeletionActionKey;
 -(void)editDoneTapped;
 -(void)reload;
 -(void)reloadSpecifiers;
+- (BOOL)performDeletionActionForSpecifier:(PSSpecifier*)specifier;
 @end
 
 @interface UFReorderListController : PSEditableListController {

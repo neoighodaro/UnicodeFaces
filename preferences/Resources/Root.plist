@@ -14,7 +14,7 @@
             id = "activator";
             cell = PSLinkListCell;
             defaults = "com.tapsharp.unicodefaces";
-            detail = UFReorderListController;
+            detail = HBListItemsController;
             key = "activator";
             label = ACTIVATOR;
             validTitles = (

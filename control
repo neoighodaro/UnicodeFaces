@@ -2,7 +2,7 @@ Package: com.tapsharp.unicodefaces
 Name: Unicode Faces
 Depends: firmware(>=8.0), mobilesubstrate, ws.hbang.common (>= 1.3)
 Conflicts:org.seatanners.unifaces
-Version: 1.2.2
+Version: 1.2.3
 Architecture: iphoneos-arm
 Description: Add Unicode faces to your Keyboard. Based loosely on @seatanners UniFaces. Hold on the spacebar key to activate.
 Maintainer: TapSharp <tweaks@tapsharp.com>

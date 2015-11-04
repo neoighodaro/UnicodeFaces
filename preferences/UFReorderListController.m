@@ -1,4 +1,5 @@
 #import "../Common.h"
+#include "UFRootListController.h"
 #include "UFReorderListController.h"
 
 HBPreferences* preferences;
@@ -74,10 +75,12 @@ HBPreferences* preferences;
 #pragma mark - Delete and Add
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
--(void)removeUnicodeFace:(PSSpecifier*)specifier{
+-(void)removeUnicodeFace:(PSSpecifier*)specifier {
 	[_unicodeFaces removeObjectAtIndex:[_unicodeFaces indexOfObject:[specifier identifier]]];
 	[preferences setObject:_unicodeFaces forKey:@"unifaces"];
 	[preferences synchronize];
+	[self reloadSpecifiers];
+    [UFRootListController postPreferenceChangedNotification];
 }
 
 -(void) addUnicodeFace:(NSString*)unicodeFace {
@@ -85,6 +88,7 @@ HBPreferences* preferences;
 	[preferences setObject:_unicodeFaces forKey:@"unifaces"];
 	[preferences synchronize];
 	[self reloadSpecifiers];
+	[UFRootListController postPreferenceChangedNotification];
 }
 
 - (IBAction) addUnicodeFaceAlert:(id)sender {
@@ -137,6 +141,22 @@ HBPreferences* preferences;
 #pragma mark - Reordering Table Rows
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+- (BOOL)performDeletionActionForSpecifier:(PSSpecifier*)specifier {
+	@try {
+		[super performDeletionActionForSpecifier:specifier];
+	}
+	@catch (NSException* exception) {
+		// @TODO: Implement yourself, throwing some exception
+		HBLogDebug(@"Caught Exception: %@", exception.reason);
+
+		NSMutableArray* specifiers = [_specifiers mutableCopy];
+		[specifiers removeObjectAtIndex:[_specifiers indexOfObject:specifier]];
+		_specifiers = specifiers;
+
+		[specifiers release];
+	}
+}
+
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return UITableViewCellEditingStyleDelete;
 }
@@ -150,12 +170,14 @@ HBPreferences* preferences;
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-    PSSpecifier *specifier = [_unicodeFaces objectAtIndex:fromIndexPath.row];
+    NSString* unicodeFace = [_unicodeFaces objectAtIndex:fromIndexPath.row];
     [_unicodeFaces removeObjectAtIndex:fromIndexPath.row];
-    [_unicodeFaces insertObject:specifier atIndex:toIndexPath.row];
+    [_unicodeFaces insertObject:unicodeFace atIndex:toIndexPath.row];
 
 	[preferences setObject:_unicodeFaces forKey:@"unifaces"];
 	[preferences synchronize];
+	[self reloadSpecifiers];
+	[UFRootListController postPreferenceChangedNotification];
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {

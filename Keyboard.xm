@@ -58,6 +58,25 @@ HBPreferences* preferences;
 %end
 
 
+void UFPreferencesChanged() {
+    @try {
+        HBLogDebug(@"UFPreferencesChanged");
+
+        NSDictionary *prefs = [NSDictionary dictionaryWithContentsOfFile:UFBundle_PrefsFilePath];
+        HBLogDebug(@"Prefs: %@", prefs);
+
+        if (prefs[@"activator"]) {
+            [preferences setObject:prefs[@"activator"] forKey:@"activator"];
+        }
+
+        if (prefs[@"unifaces"]) {
+            [preferences setObject:prefs[@"unifaces"] forKey:@"unifaces"];
+        }
+    }
+    @catch (NSException *exception) {
+        HBLogDebug(@"Exception: %@", exception.reason);
+    }
+}
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #pragma mark - Constructor
@@ -66,5 +85,9 @@ HBPreferences* preferences;
 %ctor {
     preferences = [[HBPreferences alloc] initWithIdentifier:UFBundleID];
     [preferences registerDefaults:@{ @"activator": @"Space-Key", @"unifaces": defaultUnifaces }];
+
+    UFPreferencesChanged();
+    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)UFPreferencesChanged, (CFStringRef)UFBundleID_Notification, NULL, kNilOptions);
+
     %init;
 }
