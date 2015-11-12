@@ -3,12 +3,10 @@
 	items = (
 		{
 			cell = PSGroupCell;
-			condensed = 0;
+			condensed = 1;
 			headerCellClass = HBPackageNameHeaderCell;
 			icon = icon.png;
 			packageIdentifier = "com.tapsharp.unicodefaces";
-			packageNameOverride = "Unicode Faces";
-			showVersion = 1;
 		},
 
 		{
