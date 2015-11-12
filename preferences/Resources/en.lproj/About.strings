@@ -1,7 +1,0 @@
-{
-	ABOUT = "About";
-	DEVELOPER = "Developer(s)";
-	EMAIL_SUPPORT = "Email Support";
-	EMAIL_SUPPORT_TEXT = "Have issues using this tweak? Send us an email, or tweet at us for faster resolution.";
-	TRANSLATION = "Translation";
-}

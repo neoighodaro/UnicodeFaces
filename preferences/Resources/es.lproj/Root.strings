@@ -1,5 +1,4 @@
 {
-	ABOUT = "Acerca de";
 	ACTIVATION_HELP = "Debes mantener pulsado este botón para activar el UnicodeFaces. Puede que sea necesario que hagas un respring para ver los cambios.";
 	ACTIVATOR = "Activador";
 	ADD = "Añadir";
