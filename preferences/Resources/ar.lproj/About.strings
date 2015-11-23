@@ -1,7 +1,0 @@
-{
-	ABOUT = "حول";
-	DEVELOPER = "المطور";
-	EMAIL_SUPPORT = "إرسال إيميل إلى الدعم";
-	EMAIL_SUPPORT_TEXT = "هل تواجه أي مشاكل ؟ أرسل لنا إيميل، أو تغريدة لحل أسرع.";
-	TRANSLATION = "ترجمة";
-}

@@ -1,5 +1,4 @@
 {
-	ABOUT = "Sobre";
 	ACTIVATION_HELP = "Você tem que segurar esta tecla para ativar o selecionador de UnicodeFaces. Pode que seja preciso fazer um respring para ver as mudanças.";
 	ACTIVATOR = "Ativador";
 	ADD = "Adicionar";

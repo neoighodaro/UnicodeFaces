@@ -3,12 +3,10 @@
 	items = (
 		{
 			cell = PSGroupCell;
-			condensed = 0;
+			condensed = 1;
 			headerCellClass = HBPackageNameHeaderCell;
 			icon = icon.png;
 			packageIdentifier = "com.tapsharp.unicodefaces";
-			packageNameOverride = "Unicode Faces";
-			showVersion = 1;
 		},
 
 		{
@@ -36,7 +34,7 @@
 
 		{
 			cell = PSGroupCell;
-			label = TRANSLATION;
+			label = TRANSLATORS;
 		},
 		{
 			cellClass = HBTwitterCell;
@@ -57,7 +55,7 @@
 
 		{
 			cell = PSGroupCell;
-			footerText = EMAIL_SUPPORT_TEXT;
+			label = EMAIL_SUPPORT_HEADER;
 		},
 		{
 			action = hb_sendSupportEmail;
