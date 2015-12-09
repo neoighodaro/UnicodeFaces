@@ -1,4 +1,5 @@
 {
+	ABOUT = "Über uns";
 	ACTIVATION_HELP = "Drücke den Knopf länger um das Menü zu aktivieren. Du musst evtl respingen um Änderungen wahr zunehmen.";
 	ACTIVATOR = "Activator";
 	ADD = "Hinzufügen";
@@ -15,4 +16,6 @@
 	RESET_TITLE = "Auf Standardeinstellungen zurücksetzen ";
 	SHARE_TEXT = "Hallo, Ich benutze Unicode Faces von %@ um coole text Smileys zu verschicken %@ #iOS #iPhone #iPad";
 	SPACE_KEY = "Leertaste";
+	SUPPORT_DEVELOPER = "ondersteuning Developer";
+	SUPPORT_DEVELOPER_TEXT = "U kunt de ontwikkelaar te ondersteunen door het kopen van de AppStore versie van UnicodeFaces genoemd TextFaces . U kunt nog steeds beslissen welke te gebruiken . Deze laatste heeft geen jailbreak nodig.";
 }

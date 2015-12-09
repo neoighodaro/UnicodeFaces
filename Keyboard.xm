@@ -26,9 +26,10 @@ HBPreferences* preferences;
 
 %new
 -(void) buildUnicodeKeyboard:(UIKeyboardLayoutStar *)keyboard {
-    [self unifacesKeyboard:self.subviews withIntent:@"hide"];
+    [self unifacesKeyboard:[self subviews] withIntent:@"hide"];
 
     ButtonPressHandler* buttonPressHandler = [[ButtonPressHandler alloc] initWithKeyboard:self];
+
     UnicodeFacesKeyboard* view = [[UnicodeFacesKeyboard alloc] initWithFrame:self.frame
                                                      withButtonPressListener:buttonPressHandler];
 
@@ -43,14 +44,8 @@ HBPreferences* preferences;
 - (void)unifacesKeyboard:(NSArray *)subviews withIntent:(NSString *)intent {
     for (UIView *view in subviews) {
         if ([view isKindOfClass:[UnicodeFacesKeyboard class]]) {
-            if ([intent isEqual:@"show"]) {
-                [self bringSubviewToFront:view];
-            }
-
-            else if ([intent isEqual:@"hide"]) {
-                [view removeFromSuperview];
-            }
-
+            if ([intent isEqual:@"hide"]) [view removeFromSuperview];
+            if ([intent isEqual:@"show"]) [self bringSubviewToFront:view];
             break;
         }
     }
@@ -86,8 +81,11 @@ void UFPreferencesChanged() {
     preferences = [[HBPreferences alloc] initWithIdentifier:UFBundleID];
     [preferences registerDefaults:@{ @"activator": @"Space-Key", @"unifaces": defaultUnifaces }];
 
+    CFNotificationCenterAddObserver(
+        CFNotificationCenterGetDarwinNotifyCenter(), NULL,
+        (CFNotificationCallback)UFPreferencesChanged,
+        (CFStringRef)UFBundleID_Notification, NULL, kNilOptions);
     UFPreferencesChanged();
-    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)UFPreferencesChanged, (CFStringRef)UFBundleID_Notification, NULL, kNilOptions);
 
     %init;
 }

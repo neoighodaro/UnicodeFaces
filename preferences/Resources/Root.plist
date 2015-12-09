@@ -48,12 +48,21 @@
 
         {
             cell = PSGroupCell;
+            footerText = SUPPORT_DEVELOPER_TEXT;
         },
         {
             cell = PSLinkCell;
             detail = UFAboutListController;
             isController = 1;
             label = ABOUT;
+        },
+        {
+            cell = PSButtonCell;
+            cellClass = HBInitialsLinkTableCell;
+            label = SUPPORT_DEVELOPER;
+            enabled = 1;
+            icon = "textfaces.png";
+            url = "http://appsto.re/us/urDu_.i";
         },
 
         {

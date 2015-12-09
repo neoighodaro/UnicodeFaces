@@ -6,7 +6,7 @@ HBPreferences* preferences;
 
 @implementation UFReorderListController
 
--(id)init{
+-(id)init {
     self = [super init];
 
     if (self) {
@@ -25,7 +25,7 @@ HBPreferences* preferences;
 #pragma mark - Specifiers
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
--(id)specifiers {
+- (id)specifiers {
 	if (_specifiers == nil) {
 		_specifiers = [[self unifacecodeSpecifiers] copy];
 	}
@@ -33,7 +33,7 @@ HBPreferences* preferences;
 	return _specifiers;
 }
 
--(NSMutableArray*) unicodeFaces {
+- (NSMutableArray*)unicodeFaces {
 	if ( ! _unicodeFaces) {
 		_unicodeFaces = [[preferences objectForKey:@"unifaces"] mutableCopy];
 	}
@@ -42,11 +42,11 @@ HBPreferences* preferences;
 }
 
 
-- (NSMutableArray*) unifacecodeSpecifiers {
+- (NSMutableArray*)unifacecodeSpecifiers {
 	NSMutableArray* specifiers = [NSMutableArray array];
 
 	for (NSString* unicodeFace in [self unicodeFaces]) {
-		if ( ! [unicodeFace isEqual:@""]) {
+		if ( ! [unicodeFace isEqualToString:@""]) {
 			[specifiers addObject:[self unifacecodeSpecifier:unicodeFace]];
 		}
 	}
@@ -54,7 +54,7 @@ HBPreferences* preferences;
 	return specifiers;
 }
 
--(PSSpecifier *) unifacecodeSpecifier:(NSString *)uniface {
+- (PSSpecifier *)unifacecodeSpecifier:(NSString *)uniface {
     PSSpecifier *specifier = [PSSpecifier preferenceSpecifierNamed:uniface
     														target:self
     														   set:nil
@@ -75,24 +75,48 @@ HBPreferences* preferences;
 #pragma mark - Delete and Add
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
--(void)removeUnicodeFace:(PSSpecifier*)specifier {
+- (id)readPreferenceValue:(PSSpecifier *)specifier {
+    NSDictionary *prefs = [NSDictionary dictionaryWithContentsOfFile:UFBundle_PrefsFilePath];
+
+    if ( ! prefs[[specifier propertyForKey:@"key"]]) {
+        return [specifier propertyForKey:@"default"];
+    }
+
+    return prefs[[specifier propertyForKey:@"key"]];
+}
+
+- (void)removeUnicodeFace:(PSSpecifier*)specifier {
 	[_unicodeFaces removeObjectAtIndex:[_unicodeFaces indexOfObject:[specifier identifier]]];
+
 	[preferences setObject:_unicodeFaces forKey:@"unifaces"];
-	[preferences synchronize];
+
+    NSMutableDictionary *defaults = [NSMutableDictionary dictionary];
+    [defaults addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:UFBundle_PrefsFilePath]];
+    [defaults setObject:_unicodeFaces forKey:@"unifaces"];
+    [defaults writeToFile:UFBundle_PrefsFilePath atomically:YES];
+
+    [self.class postPreferenceChangedNotification];
+
 	[self reloadSpecifiers];
-    [UFRootListController postPreferenceChangedNotification];
 }
 
--(void) addUnicodeFace:(NSString*)unicodeFace {
+- (void)addUnicodeFace:(NSString*)unicodeFace {
 	[_unicodeFaces insertObject:unicodeFace atIndex:0];
+
 	[preferences setObject:_unicodeFaces forKey:@"unifaces"];
-	[preferences synchronize];
+
+    NSMutableDictionary *defaults = [NSMutableDictionary dictionary];
+    [defaults addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:UFBundle_PrefsFilePath]];
+    [defaults setObject:_unicodeFaces forKey:@"unifaces"];
+    [defaults writeToFile:UFBundle_PrefsFilePath atomically:YES];
+
+    [self.class postPreferenceChangedNotification];
+
 	[self reloadSpecifiers];
-	[UFRootListController postPreferenceChangedNotification];
 }
 
-- (IBAction) addUnicodeFaceAlert:(id)sender {
-	UIAlertController * alert=   [UIAlertController alertControllerWithTitle:TRANSLATE_TEXT(@"ADD_UNICODE")
+- (IBAction)addUnicodeFaceAlert:(id)sender {
+	UIAlertController * alert = [UIAlertController alertControllerWithTitle:TRANSLATE_TEXT(@"ADD_UNICODE")
 																	 message:nil
 															  preferredStyle:UIAlertControllerStyleAlert];
 
@@ -194,7 +218,7 @@ HBPreferences* preferences;
 #pragma mark - Deallocate
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
--(void)dealloc {
+- (void)dealloc {
 	[_unicodeFaces release];
 	[super dealloc];
 }
@@ -205,7 +229,7 @@ HBPreferences* preferences;
     self.navigationController.navigationBar.tintColor = [UFReorderListController hb_tintColor];
 }
 
--(void)editDoneTapped {
+- (void)editDoneTapped {
 	[super editDoneTapped];
 	_isEditingMode = !_isEditingMode;
 	[self setEditing:_isEditingMode animated:YES];

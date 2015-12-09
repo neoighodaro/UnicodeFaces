@@ -1,0 +1,7 @@
+{
+	ABOUT = "Acerca de";
+	DEVELOPER = "Desarrollador";
+	EMAIL_SUPPORT = "E-mail de Soporte";
+	EMAIL_SUPPORT_TEXT = "Tienes problemas usando este tweak? Envíanos un correo electrónico o tweet para una resolución más rápida.";
+	TRANSLATION = "Traducción";
+}

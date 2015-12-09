@@ -1,4 +1,5 @@
 {
+	ABOUT = "Acerca de";
 	ACTIVATION_HELP = "Debes mantener pulsado este botón para activar el UnicodeFaces. Puede que sea necesario que hagas un respring para ver los cambios.";
 	ACTIVATOR = "Activador";
 	ADD = "Añadir";
@@ -15,4 +16,6 @@
 	RESET_TITLE = "Restablecer ajustes predeterminados";
 	SHARE_TEXT = "Hola, estoy usando UnicodeFaces de %@ para utilizar algunos emoticonos de texto  geniales %@ #iOS #iPhone #iPad";
 	SPACE_KEY = "Tecla espacio";
+	SUPPORT_DEVELOPER = "Soporte para desarrolladores";
+	SUPPORT_DEVELOPER_TEXT = "Usted puede apoyar el desarrollador mediante la compra de la versión AppStore de UnicodeFaces llamados TextFaces . Usted todavía puede decidir cuál usar. Este último no requiere una fuga .";
 }

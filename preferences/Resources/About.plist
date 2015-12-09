@@ -3,10 +3,11 @@
 	items = (
 		{
 			cell = PSGroupCell;
-			condensed = 1;
 			headerCellClass = HBPackageNameHeaderCell;
 			icon = icon.png;
 			packageIdentifier = "com.tapsharp.unicodefaces";
+			showAuthor = 0;
+			showVersion = 0;
 		},
 
 		{
@@ -55,7 +56,8 @@
 
 		{
 			cell = PSGroupCell;
-			label = EMAIL_SUPPORT_HEADER;
+			label = EMAIL_SUPPORT;
+			footerText = EMAIL_SUPPORT_TEXT;
 		},
 		{
 			action = hb_sendSupportEmail;

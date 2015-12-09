@@ -1,4 +1,5 @@
 {
+	ABOUT = "About";
 	ACTIVATION_HELP = "You have to long press this key to activate Unicode Faces selector. You may need to respring to see changes.";
 	ACTIVATOR = "Activator";
 	ADD = "Add";
@@ -15,4 +16,6 @@
 	RESET_TITLE = "Reset To Default";
 	SHARE_TEXT = "Hey I'm using Unicode Faces by %@ to type some really cool text smileys %@ #iOS #iPhone #iPad";
 	SPACE_KEY = "Space Key";
+	SUPPORT_DEVELOPER = "Support Developer";
+	SUPPORT_DEVELOPER_TEXT = "You can support the developer by buying the AppStore version of UnicodeFaces called TextFaces. You can still decide which to use. The latter doesn't require a jailbreak.";
 }
