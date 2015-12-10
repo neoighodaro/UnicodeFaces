@@ -88,13 +88,14 @@ HBPreferences* preferences;
 	[_unicodeFaces removeObjectAtIndex:[_unicodeFaces indexOfObject:[specifier identifier]]];
 
 	[preferences setObject:_unicodeFaces forKey:@"unifaces"];
+	[preferences synchronize];
 
-    NSMutableDictionary *defaults = [NSMutableDictionary dictionary];
-    [defaults addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:UFBundle_PrefsFilePath]];
-    [defaults setObject:_unicodeFaces forKey:@"unifaces"];
-    [defaults writeToFile:UFBundle_PrefsFilePath atomically:YES];
+    // NSMutableDictionary *defaults = [NSMutableDictionary dictionary];
+    // [defaults addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:UFBundle_PrefsFilePath]];
+    // [defaults setObject:_unicodeFaces forKey:@"unifaces"];
+    // [defaults writeToFile:UFBundle_PrefsFilePath atomically:YES];
 
-    [self.class postPreferenceChangedNotification];
+    [UFRootListController postPreferenceChangedNotification];
 
 	[self reloadSpecifiers];
 }
@@ -103,13 +104,14 @@ HBPreferences* preferences;
 	[_unicodeFaces insertObject:unicodeFace atIndex:0];
 
 	[preferences setObject:_unicodeFaces forKey:@"unifaces"];
+	[preferences synchronize];
 
-    NSMutableDictionary *defaults = [NSMutableDictionary dictionary];
-    [defaults addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:UFBundle_PrefsFilePath]];
-    [defaults setObject:_unicodeFaces forKey:@"unifaces"];
-    [defaults writeToFile:UFBundle_PrefsFilePath atomically:YES];
+    // NSMutableDictionary *defaults = [NSMutableDictionary dictionary];
+    // [defaults addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:UFBundle_PrefsFilePath]];
+    // [defaults setObject:_unicodeFaces forKey:@"unifaces"];
+    // [defaults writeToFile:UFBundle_PrefsFilePath atomically:YES];
 
-    [self.class postPreferenceChangedNotification];
+    [UFRootListController postPreferenceChangedNotification];
 
 	[self reloadSpecifiers];
 }
@@ -169,9 +171,6 @@ HBPreferences* preferences;
 		[super performDeletionActionForSpecifier:specifier];
 	}
 	@catch (NSException* exception) {
-		// @TODO: Implement yourself, throwing some exception
-		HBLogDebug(@"Caught Exception: %@", exception.reason);
-
 		NSMutableArray* specifiers = [_specifiers mutableCopy];
 		[specifiers removeObjectAtIndex:[_specifiers indexOfObject:specifier]];
 		_specifiers = specifiers;
@@ -185,11 +184,11 @@ HBPreferences* preferences;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return ! (indexPath.row == [_unicodeFaces count]);
+    return ! (indexPath.row == _unicodeFaces.count);
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    return ! (indexPath.row == [_unicodeFaces count]);
+    return ! (indexPath.row == _unicodeFaces.count);
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
@@ -199,7 +198,9 @@ HBPreferences* preferences;
 
 	[preferences setObject:_unicodeFaces forKey:@"unifaces"];
 	[preferences synchronize];
+
 	[self reloadSpecifiers];
+
 	[UFRootListController postPreferenceChangedNotification];
 }
 
