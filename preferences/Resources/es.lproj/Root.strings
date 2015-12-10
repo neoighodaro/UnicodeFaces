@@ -8,6 +8,8 @@
 	ARE_YOU_SURE_RESET = "Esta opción restablecerá los ajustes iniciales de UnicodeFaces.";
 	CANCEL = "Cancelar";
 	CLOSE = "Cerrar";
+	EDIT = "Editar";
+	EDIT_UNICODE = "Editar UnicodeFace";
 	ENTER_UNICODE = "Ingresa tu UnicodeFace";
 	INTL_KEY = "Internacional/Emoji Key";
 	MANAGE = "Administrar UnicodeFaces";

@@ -8,6 +8,8 @@
 	ARE_YOU_SURE_RESET = "This will reset the unicode faces back to the stock options.";
 	CANCEL = "Cancel";
 	CLOSE = "Close";
+	EDIT = "Edit";
+	EDIT_UNICODE = "Edit UnicodeFace";
 	ENTER_UNICODE = "Enter Your UnicodeFace";
 	INTL_KEY = "International/Emoji Key";
 	MANAGE = "Manage Unicode Faces";

@@ -116,6 +116,22 @@ HBPreferences* preferences;
 	[self reloadSpecifiers];
 }
 
+- (void)updateUnicodeFace:(NSString*)unicodeFace atIndex:(NSIndexPath*)indexPath {
+	[_unicodeFaces replaceObjectAtIndex:indexPath.row withObject:unicodeFace];
+
+	[preferences setObject:_unicodeFaces forKey:@"unifaces"];
+	[preferences synchronize];
+
+    // NSMutableDictionary *defaults = [NSMutableDictionary dictionary];
+    // [defaults addEntriesFromDictionary:[NSDictionary dictionaryWithContentsOfFile:UFBundle_PrefsFilePath]];
+    // [defaults setObject:_unicodeFaces forKey:@"unifaces"];
+    // [defaults writeToFile:UFBundle_PrefsFilePath atomically:YES];
+
+    [UFRootListController postPreferenceChangedNotification];
+
+	[self reloadSpecifiers];
+}
+
 - (IBAction)addUnicodeFaceAlert:(id)sender {
 	UIAlertController * alert = [UIAlertController alertControllerWithTitle:TRANSLATE_TEXT(@"ADD_UNICODE")
 																	 message:nil
@@ -144,6 +160,38 @@ HBPreferences* preferences;
 	[alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
 		textField.placeholder = TRANSLATE_TEXT(@"ENTER_UNICODE");
 		textField.keyboardType = UIKeyboardTypeDefault;
+	}];
+
+	[self presentViewController:alert animated:YES completion:nil];
+}
+
+
+- (void)editUnicodeFaceAlertForIndex:(NSIndexPath *)indexPath {
+	UIAlertController * alert = [UIAlertController alertControllerWithTitle:TRANSLATE_TEXT(@"EDIT_UNICODE")
+																	 message:nil
+															  preferredStyle:UIAlertControllerStyleAlert];
+
+	UIAlertAction* addButton = [UIAlertAction actionWithTitle:TRANSLATE_TEXT(@"EDIT")
+														style:UIAlertActionStyleDefault
+													  handler:^(UIAlertAction * action) {
+													  		NSString* newUnicodeFace = ((UITextField*)alert.textFields[0]).text;
+
+													  		[self updateUnicodeFace:newUnicodeFace atIndex:indexPath];
+															[alert dismissViewControllerAnimated:YES completion:nil];
+													  }];
+
+	UIAlertAction* cancelButton = [UIAlertAction actionWithTitle:TRANSLATE_TEXT(@"CANCEL")
+														style:UIAlertActionStyleCancel
+													  handler:^(UIAlertAction * action) {
+															[alert dismissViewControllerAnimated:YES completion:nil];
+													  }];
+
+	[alert addAction:addButton];
+	[alert addAction:cancelButton];
+	[alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+		textField.placeholder = TRANSLATE_TEXT(@"ENTER_UNICODE");
+		textField.keyboardType = UIKeyboardTypeDefault;
+		textField.text = [_unicodeFaces objectAtIndex:indexPath.row];
 	}];
 
 	[self presentViewController:alert animated:YES completion:nil];
@@ -205,11 +253,18 @@ HBPreferences* preferences;
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
-    if ([proposedDestinationIndexPath row] < [_unicodeFaces count]) {
+    if ([proposedDestinationIndexPath row] < _unicodeFaces.count) {
         return proposedDestinationIndexPath;
     }
-    NSIndexPath *betterIndexPath = [NSIndexPath indexPathForRow:[_unicodeFaces count]-1 inSection:0];
+
+    NSIndexPath *betterIndexPath = [NSIndexPath indexPathForRow:_unicodeFaces.count-1 inSection:0];
     return betterIndexPath;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[self editUnicodeFaceAlertForIndex:indexPath];
+
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 

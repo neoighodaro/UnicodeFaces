@@ -8,6 +8,8 @@
 	ARE_YOU_SURE_RESET = "إعادة تعيين وجوه اليونيكود إلى وضعها الإفتراضي.";
 	CANCEL = "إلغاء";
 	CLOSE = "إغلاق";
+	EDIT = "تحرير";
+	EDIT_UNICODE = "تحرير UnicodeFace";
 	ENTER_UNICODE = "أدخل وجه اليونيكود";
 	INTL_KEY = "دولي/Emoji";
 	MANAGE = "إدارة وجوه اليونيكود";
