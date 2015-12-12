@@ -265,18 +265,13 @@ HBPreferences* preferences;
 
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-#pragma mark - Deallocate
+#pragma mark - Misc
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 - (void)dealloc {
 	[_unicodeFaces release];
 	[super dealloc];
 }
-
-
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-#pragma mark - Misc
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
