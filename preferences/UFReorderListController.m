@@ -5,7 +5,7 @@ HBPreferences* preferences;
 
 @implementation UFReorderListController
 
--(id)init {
+- (id)init {
     self = [super init];
 
     if (self) {
@@ -32,7 +32,7 @@ HBPreferences* preferences;
 	return _specifiers;
 }
 
-- (NSMutableArray*)unicodeFaces {
+- (NSMutableArray *)unicodeFaces {
 	if ( ! _unicodeFaces) {
 		_unicodeFaces = [[preferences objectForKey:@"unifaces"] mutableCopy];
 	}
@@ -41,12 +41,12 @@ HBPreferences* preferences;
 }
 
 
-- (NSMutableArray*)unifacecodeSpecifiers {
+- (NSMutableArray *)unifacecodeSpecifiers {
 	NSMutableArray* specifiers = [NSMutableArray array];
 
-	for (NSString* unicodeFace in [self unicodeFaces]) {
-		if ( ! [unicodeFace isEqualToString:@""]) {
-			[specifiers addObject:[self unifacecodeSpecifier:unicodeFace]];
+	for (NSString* face in self.unicodeFaces) {
+		if ( ! [face isEqualToString:@""]) {
+			[specifiers addObject:[self unifacecodeSpecifier:face]];
 		}
 	}
 
@@ -84,7 +84,7 @@ HBPreferences* preferences;
     return prefs[[specifier propertyForKey:@"key"]];
 }
 
-- (void)removeUnicodeFace:(PSSpecifier*)specifier {
+- (void)removeUnicodeFace:(PSSpecifier *)specifier {
 	[_unicodeFaces removeObjectAtIndex:[_unicodeFaces indexOfObject:[specifier identifier]]];
 
 	[preferences setObject:_unicodeFaces forKey:@"unifaces"];
@@ -100,7 +100,7 @@ HBPreferences* preferences;
 	[self reloadSpecifiers];
 }
 
-- (void)addUnicodeFace:(NSString*)unicodeFace {
+- (void)addUnicodeFace:(NSString *)unicodeFace {
 	[_unicodeFaces insertObject:unicodeFace atIndex:0];
 
 	[preferences setObject:_unicodeFaces forKey:@"unifaces"];
@@ -116,7 +116,7 @@ HBPreferences* preferences;
 	[self reloadSpecifiers];
 }
 
-- (void)updateUnicodeFace:(NSString*)unicodeFace atIndex:(NSIndexPath*)indexPath {
+- (void)updateUnicodeFace:(NSString *)unicodeFace atIndex:(NSIndexPath *)indexPath {
 	[_unicodeFaces replaceObjectAtIndex:indexPath.row withObject:unicodeFace];
 
 	[preferences setObject:_unicodeFaces forKey:@"unifaces"];
@@ -210,6 +210,13 @@ HBPreferences* preferences;
     }
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[self editUnicodeFaceAlertForIndex:indexPath];
+
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #pragma mark - Reordering Table Rows
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -252,13 +259,12 @@ HBPreferences* preferences;
 	[UFRootListController postPreferenceChangedNotification];
 }
 
-- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
-    if ([proposedDestinationIndexPath row] < _unicodeFaces.count) {
-        return proposedDestinationIndexPath;
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)fromIndexPath toProposedIndexPath:(NSIndexPath *)toIndexPath {
+    if (toIndexPath.row < _unicodeFaces.count) {
+        return toIndexPath;
     }
 
-    NSIndexPath *betterIndexPath = [NSIndexPath indexPathForRow:_unicodeFaces.count-1 inSection:0];
-    return betterIndexPath;
+    return [NSIndexPath indexPathForRow:(_unicodeFaces.count - 1) inSection:0];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -279,14 +285,23 @@ HBPreferences* preferences;
 }
 
 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#pragma mark - Misc
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBar.tintColor = [UFReorderListController hb_tintColor];
+    self.navigationController.navigationBar.tintColor = [self.class hb_tintColor];
 }
 
 - (void)editDoneTapped {
 	[super editDoneTapped];
+
 	_isEditingMode = !_isEditingMode;
+
 	[self setEditing:_isEditingMode animated:YES];
+
+	if ( ! _isEditingMode) {
+	}
 }
 @end
