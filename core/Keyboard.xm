@@ -56,9 +56,7 @@ HBPreferences* preferences;
 void UFPreferencesChanged() {
     @try {
         HBLogDebug(@"UFPreferencesChanged");
-
         NSDictionary *prefs = [NSDictionary dictionaryWithContentsOfFile:UFBundle_PrefsFilePath];
-        HBLogDebug(@"Prefs: %@", prefs);
 
         if (prefs[@"activator"]) {
             [preferences setObject:prefs[@"activator"] forKey:@"activator"];
