@@ -235,7 +235,11 @@ HBPreferences* preferences;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return UITableViewCellEditingStyleDelete;
+	if (tableView.editing) {
+		return UITableViewCellEditingStyleDelete;
+	}
+
+	return UITableViewCellEditingStyleNone;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
