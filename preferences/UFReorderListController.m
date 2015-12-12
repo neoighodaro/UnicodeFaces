@@ -242,10 +242,6 @@ HBPreferences* preferences;
     return ! (indexPath.row == _unicodeFaces.count);
 }
 
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    return ! (indexPath.row == _unicodeFaces.count);
-}
-
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
     NSString* unicodeFace = [_unicodeFaces objectAtIndex:fromIndexPath.row];
     [_unicodeFaces removeObjectAtIndex:fromIndexPath.row];
@@ -266,13 +262,6 @@ HBPreferences* preferences;
 
     return [NSIndexPath indexPathForRow:(_unicodeFaces.count - 1) inSection:0];
 }
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	[self editUnicodeFaceAlertForIndex:indexPath];
-
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
 
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
