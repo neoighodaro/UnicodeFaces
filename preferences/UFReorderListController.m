@@ -302,6 +302,8 @@ HBPreferences* preferences;
 	[self setEditing:_isEditingMode animated:YES];
 
 	if ( ! _isEditingMode) {
+		[preferences setObject:_unicodeFaces forKey:@"unifaces"];
+		[preferences synchronize];
 	}
 }
 @end
