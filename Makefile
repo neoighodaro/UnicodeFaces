@@ -7,8 +7,10 @@ UnicodeFaces_LIBRARIES = cephei
 UnicodeFaces_LDFLAGS += -Wl,-segalign,4000
 
 export ARCHS = armv7 arm64
-export TARGET = iphone:clang
+export TARGET = iphone:9.2
 export TARGET_IPHONEOS_DEPLOYMENT_VERSION = 8.0
+export THEOS_DEVICE_IP=192.168.43.101
+export THEOS_DEVICE_PORT=22
 
 include $(THEOS)/makefiles/common.mk
 include $(THEOS_MAKE_PATH)/tweak.mk
