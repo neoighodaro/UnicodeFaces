@@ -15,6 +15,8 @@
 - (void)performSelectorInBackground:(SEL)aSelector withObject:(id)arg;
 - (id)_layout;
 - (NSArray *)subviews;
--(void) buildUnicodeKeyboard:(UIKeyboardLayoutStar *)keyboard;
+- (void)longPressAction;
+- (void)longPressAction:(id)arg;
+- (void) buildUnicodeKeyboard:(UIKeyboardLayoutStar *)keyboard;
 - (void)unifacesKeyboard:(NSArray *)subviews withIntent:(NSString *)intent;
 @end

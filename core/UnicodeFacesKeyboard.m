@@ -98,7 +98,7 @@ HBPreferences* preferences;
 
 	btn.titleLabel.font = [btn.titleLabel.font fontWithSize:12];
 	btn.frame = CGRectMake(10, 8, 50, 20);
-	[btn setTitle:@"Settings" forState:UIControlStateNormal];
+	[btn setTitle:@"Donate" forState:UIControlStateNormal];
 	[btn addTarget:self action:@selector(buttonPressReceivedForSettings:)
 			  forControlEvents:UIControlEventTouchUpInside];
 
@@ -141,20 +141,37 @@ HBPreferences* preferences;
 #pragma mark - Button Press Events
 
 - (void)buttonPressReceivedForSettings:(UIButton *)src {
-	[UnicodeFacesKeyboard animateWithDuration:.1 delay:0.0 options:UIViewAnimationOptionCurveEaseIn
-		animations:^{
-			CGRect newRect = self.frame;
-			newRect.origin.y = CGRectGetHeight(self.frame)+100;
-    		self.frame = newRect;
-		}
-		completion:^(BOOL finished) {
-			if (finished) {
-				NSString *url = [NSString stringWithFormat:@"%@%@", UIApplicationOpenSettingsURLString, UFBundleID];
-				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
-			}
-		}
-	];
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Donate"
+	                                               message:@"You can donate by purchasing the official app from the store for $0.99. Every purchase counts!"
+	                                              delegate:self
+	                                     cancelButtonTitle:@"Okay, Cool 🙌"
+	                                     otherButtonTitles:@"No ☹️", nil];
+	[alert show];
+	[alert release];
+
+
+	// [UnicodeFacesKeyboard animateWithDuration:.1 delay:0.0 options:UIViewAnimationOptionCurveEaseIn
+	// 		animations:^{
+	// 			CGRect newRect = self.frame;
+	// 			newRect.origin.y = CGRectGetHeight(self.frame)+100;
+	//     		self.frame = newRect;
+	// 		}
+	// 		completion:^(BOOL finished) {
+	// 			if (finished) {
+	// 				NSString *url = [NSString stringWithFormat:@"%@%@", UIApplicationOpenSettingsURLString, UFBundleID];
+	// 				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+	// 			}
+	// 		}
+	// 	];
 }
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if (buttonIndex == [alertView cancelButtonIndex]) {
+		NSString* url = @"https://itunes.apple.com/app/textfaces/id1062327380?mt=8";
+		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+	}
+}
+
 
 - (void)buttonPressReceived:(UIButton *)src {
 	[UnicodeFacesKeyboard animateWithDuration:.1 delay:0.0 options:UIViewAnimationOptionCurveEaseIn

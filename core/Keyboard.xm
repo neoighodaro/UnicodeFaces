@@ -10,6 +10,10 @@ HBPreferences* preferences;
 
 %hook UIKeyboardImpl
 
+- (void)longPressAction {
+    [self longPressAction:NULL];
+}
+
 - (void)longPressAction:(id)arg1 {
     %log;
 
