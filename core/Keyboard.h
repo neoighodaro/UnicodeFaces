@@ -17,6 +17,7 @@
 - (NSArray *)subviews;
 - (void)longPressAction;
 - (void)longPressAction:(id)arg;
+- (void)longPressActionLogic:(id)arg1;
 - (void) buildUnicodeKeyboard:(UIKeyboardLayoutStar *)keyboard;
 - (void)unifacesKeyboard:(NSArray *)subviews withIntent:(NSString *)intent;
 @end
