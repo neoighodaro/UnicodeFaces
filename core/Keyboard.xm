@@ -11,12 +11,19 @@ HBPreferences* preferences;
 %hook UIKeyboardImpl
 
 - (void)longPressAction {
-    [self longPressAction:NULL];
+    %log;
+    [self longPressActionLogic:NULL];
+    %orig;
 }
 
 - (void)longPressAction:(id)arg1 {
     %log;
+    [self longPressActionLogic:arg1];
+    %orig;
+}
 
+%new
+- (void)longPressActionLogic:(id)arg1 {
     UIKeyboardLayoutStar* keyboard = (UIKeyboardLayoutStar *) [self _layout];
     NSString* longPressedKey = [keyboard.activeKey name];
 
@@ -26,9 +33,6 @@ HBPreferences* preferences;
     if ([longPressedKey isEqualToString:[preferences objectForKey:@"activator"]]) {
         [self buildUnicodeKeyboard:keyboard];
     }
-
-
-    %orig;
 }
 
 %new
