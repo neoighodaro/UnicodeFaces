@@ -1,5 +1,3 @@
-#import "Common.h"
-
 @interface UIKBTree : NSObject
 @property(retain, nonatomic) NSString *name;
 @end
@@ -10,14 +8,17 @@
 @end
 
 @interface UIKeyboardImpl : UIView
+@property(nonatomic,retain) id uf_keyboard;
+- (UIKeyboardLayoutStar *)_layout;
+- (void)longPressAction;
+- (void)longPressAction:(id)arg;
+- (void)uf_longPressAction:(id)arg1;
+- (void)uf_buildKeyboard;
+- (void)uf_toggleKeyboard:(NSArray *)subviews intent:(NSString *)intent;
+
 - (void)insertText:(id)text;
 - (CGRect)frame;
 - (void)performSelectorInBackground:(SEL)aSelector withObject:(id)arg;
-- (id)_layout;
 - (NSArray *)subviews;
-- (void)longPressAction;
-- (void)longPressAction:(id)arg;
-- (void)longPressActionLogic:(id)arg1;
-- (void) buildUnicodeKeyboard:(UIKeyboardLayoutStar *)keyboard;
 - (void)unifacesKeyboard:(NSArray *)subviews withIntent:(NSString *)intent;
 @end

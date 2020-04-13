@@ -1,21 +1,18 @@
+ARCHS = arm64 arm64e
 TWEAK_NAME = UnicodeFaces
 
-UnicodeFaces_FILES  = core/UnicodeFacesKeyboard.m
-UnicodeFaces_FILES += core/Keyboard.xm
-UnicodeFaces_FRAMEWORKS = UIKit CoreGraphics QuartzCore Social Accounts
-UnicodeFaces_LIBRARIES = cephei
-UnicodeFaces_LDFLAGS += -Wl,-segalign,4000
+UnicodeFaces_CFlags = -fobjc-arc -include src/macros.h
+UnicodeFaces_FILES = src/Core/UFKeyboard.m src/Core/Keyboard.xm src/Preferences/UFSettings.m
+UnicodeFaces_LIBRARIES += tapsharp
 
-export ARCHS = armv7 arm64
-export TARGET = iphone:9.2
-export TARGET_IPHONEOS_DEPLOYMENT_VERSION = 8.0
-export THEOS_DEVICE_IP=192.168.10.3
-export THEOS_DEVICE_PORT=22
+# SUBPROJECTS += src/Preferences
 
 include $(THEOS)/makefiles/common.mk
 include $(THEOS_MAKE_PATH)/tweak.mk
+# include $(THEOS_MAKE_PATH)/aggregate.mk
+
+after-uninstall::
+	install.exec "killall -9 SpringBoard"
 
 after-install::
 	install.exec "killall -9 SpringBoard"
-SUBPROJECTS += preferences
-include $(THEOS_MAKE_PATH)/aggregate.mk
